@@ -1,1 +1,0 @@
-# Api-Smart-QR-Code

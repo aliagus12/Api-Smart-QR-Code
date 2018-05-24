@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: ali
- * Date: 21/05/18
- * Time: 16.11
- */
 class Attendance
 {
     //database connection and table name
@@ -39,11 +33,9 @@ class Attendance
 
     function readOne()
     {
-        /*$query = "SELECT email, meet, location, time
+        $query = "SELECT email, meet, location, time
                   FROM " . $this->table_name . "
-		          WHERE email = ?";*/
-
-        $query = "SELECT * FROM " . $this->table_name . " WHERE email = ?";
+		          WHERE email = ?";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -54,7 +46,7 @@ class Attendance
         // execute query
         $stmt->execute();
 
-        /*// sget retrive row
+        /*// get retrive row
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // set values to object properties
@@ -62,6 +54,7 @@ class Attendance
         $this->meet = $row['meet'];
         $this->location = $row['location'];
         $this->time = $row['time'];*/
+
         return $stmt;
     }
 

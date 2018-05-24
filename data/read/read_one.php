@@ -5,7 +5,6 @@
  * Date: 21/05/18
  * Time: 16.11
  */
-define('ROOT', '../');
 include_once ROOT . 'config/database.php';
 include_once ROOT . 'object/attendance.php';
 
@@ -15,28 +14,24 @@ header("Access-Control-Allow-Headers: access");
 header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json; charset=UTF-8");
-
 //include database and object files
 /*include("/opt/lampp/htdocs/attandance_api/config/database.php");
-include("/opt/lampp/htdocs/attandance_api/object/attandance.php");*/
-
-//instantiate database and attandance objec
+include("/opt/lampp/htdocs/attandance_api/object/attendance.php");*/
+//instantiate database and attandance object
 $database = new Database();
 $db = $database->getConnection();
-
 //initialize object
 $attendance = new Attendance($db);
-
+// set email property of attandance
+$attendance->email = isset($_GET['email']) ? $_GET['email'] : die("nodata");
 // query attandance
-$stmt = $attendance->readAll();
+$stmt = $attendance->readOne();
 $num = $stmt->rowCount();
-
 //check if more than 0 recorc found
 if ($num > 0) {
     // attandane array
     $attandance_arr = array();
     $attandance_arr["records"] = array();
-
     //retrive our table contents
     //fetch() is faster than fetchAll()
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -44,14 +39,12 @@ if ($num > 0) {
         //this will make $row['name'] to
         //just $name only
         extract($row);
-
         $attandance_item = array(
             "email" => $email,
             "meet" => $meet,
             "location" => $location,
             "time" => $time
         );
-
         array_push($attandance_arr["records"], $attandance_item);
     }
     echo json_encode($attandance_arr);
@@ -60,4 +53,3 @@ if ($num > 0) {
         array("message" => "No Data Attandance Found.")
     );
 }
-
